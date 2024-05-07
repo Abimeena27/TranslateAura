@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <title>TranslateAura</title>
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <style>
+        body{
+            background: linear-gradient(to bottom left, #708090, #ffffff);    
+            color: rgba(2, 2, 2, 0.979);
+            padding-left: 5%;
+            padding-top: 5%;
+            padding-bottom: 5%;
+            padding-right: 5%;
+        }
+        #container{
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 100vh; /* 100% of the viewport height */
+            padding-top: 20px; /* Adjust top padding as needed */
+            padding-left: 20px;
+        }
+        #box{
+            align-items: center;
+            width: 90%; /* Adjust width as needed */
+            height: 85vh; /* Adjust height as needed */
+          
+            border-radius: 5px; /* Border radius for rounded corners */
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); /* Shadow effect */
+            padding:20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="cantainer">
+        <center>
+    <div id="box">
+        <h1>TranslateAura : My Translator</h1>
+        <p>Enter The Text to be Translated</p>
+        <textarea name="input_text" id="input_text" cols="45" rows="10"></textarea>
+        <br/>
+        <br/>
+        <p>Choose the Language You Wish to translate to</p>
+        <select id="Lang">
+            <option id="en">English</option>
+            <option id="af">Afrikaans</option>
+            <option id="sq">Albanian</option>
+            <option id="sr">Arabic</option>
+            <option id="hy">Armenian</option>
+            <option id="bg">Bulgarian</option>
+            <option id="bs">Bosnian</option>
+            <option id="zh">Chinese</option>
+            <option id="da">Danish</option>
+            <option id="nl">Dutch</option>
+            <option id="fr">French</option>
+            <option id="de">German</option>
+            <option id="el">Greek</option>
+            <option id="hi">Hindi</option>
+            <option id="hu">Hungarian</option>
+            <option id="it">Italian</option>
+            <option id="fa">Persian</option>
+            <option id="pt">Portuguese</option>
+            <option id="es">Spanish</option>
+            <option id="sv">Swedish</option>
+            <option id="ta">Tamil</option>
+            <option id="tr">Turkish</option>
+        </select>
+        <br/><br/>
+        <button id="btn" onclick="translateText()">Translate</button>
+        <br/>
+        <hr/>
+        <br/>
+        <p>Translation:</p>
+        <div id="result"></div>
+    </div>
+        </center>
+  </div> 
+</body>
+<script>
+    function translateText(){
+        const txt=document.getElementById("input_text").value;
+        const lang=document.getElementById("Lang");
+        const langcode=lang.options[lang.selectedIndex].id;
+        fetch('/translate',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                text:txt,
+                source_language_code:'auto',
+                target_language_code:langcode
+            })
+        })
+        .then(response=>response.json())
+        .then(data=>{
+            document.getElementById("result").innerText=data.result;
+        })
+    }
+</script>
+</html>
